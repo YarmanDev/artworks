@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Route, Routes } from "react-router-dom";
+import styled from "styled-components";
+import { ArtworkDetails, ArtworksView } from "./features";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <StyledApp>
+        <Routes>
+          <Route path="/" element={<ArtworksView />} />
+          <Route path="/artwork/:id" element={<ArtworkDetails />} />
+        </Routes>
+      </StyledApp>
+    </QueryClientProvider>
   );
 }
 
 export default App;
+
+const StyledApp = styled.div`
+  background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+  min-height: 100vh;
+`;
